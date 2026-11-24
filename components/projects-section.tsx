@@ -4,16 +4,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
 import { translations, type Language } from "@/lib/translations";
+import type { ProjectItem } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 interface ProjectsSectionProps {
   language: Language;
+  projects: ProjectItem[];
 }
 
-export function ProjectsSection({ language }: ProjectsSectionProps) {
+export function ProjectsSection({ language, projects }: ProjectsSectionProps) {
   const t = translations[language];
-  const projects = t.projectsList;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -28,29 +29,28 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.5, ease: "easeOut" as const },
     },
   };
 
   return (
     <motion.section
-      id="projects-section"
+      id="projetos"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+      viewport={{ once: true, amount: "some" }}
+      className="scroll-mt-14 pt-0 pb-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="border-t border-border/50 pt-16 mb-8">
+      <div className="max-w-6xl mx-auto border-t border-border/50 pt-6">
         <motion.h2
           variants={itemVariants}
           className="text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center"
         >
           {t.projectsTitle}
         </motion.h2>
-      </div>
 
-      <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-6">
         {projects.map((project) => (
           <motion.div
             key={project.id}
@@ -59,7 +59,6 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
             transition={{ type: "spring", stiffness: 300 }}
             className="group glass bg-card rounded-xl border border-border/50 shadow-lg overflow-hidden"
           >
-            {/* Project Image */}
             <div className="relative h-48 overflow-hidden">
               <Image
                 src={project.image || "/placeholder.svg"}
@@ -70,7 +69,6 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
             </div>
 
-            {/* Content */}
             <div className="p-6">
               <h3 className="text-xl font-bold text-foreground mb-2">
                 {project.title}
@@ -79,7 +77,6 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
                 {project.description}
               </p>
 
-              {/* Tech Stack */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.technologies.map((tech) => (
                   <Badge key={tech} variant="secondary" className="text-xs">
@@ -88,7 +85,6 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
                 ))}
               </div>
 
-              {/* Buttons / NDA Badge */}
               <div className="flex gap-3">
                 {project.private ? (
                   <div className="w-full flex justify-center">
@@ -141,6 +137,7 @@ export function ProjectsSection({ language }: ProjectsSectionProps) {
             </div>
           </motion.div>
         ))}
+        </div>
       </div>
     </motion.section>
   );

@@ -1,21 +1,22 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Instagram, Mail, Heart } from "lucide-react"
+import { Github, Linkedin, Mail } from "lucide-react"
 import { translations, type Language } from "@/lib/translations"
-import { socialLinks } from "@/lib/data"
+import type { ProfileData } from "@/lib/data"
 
 interface FooterProps {
   language: Language
+  profile: ProfileData
 }
 
-export function Footer({ language }: FooterProps) {
+export function Footer({ language, profile }: FooterProps) {
   const t = translations[language]
 
   const socialIcons = [
-    { icon: Github, href: socialLinks.github, label: "GitHub" },
-    { icon: Linkedin, href: socialLinks.linkedin, label: "LinkedIn" },
-    { icon: Mail, href: `mailto:${socialLinks.email}`, label: "Email" },
+    { icon: Github, href: profile.socialLinks.github, label: "GitHub" },
+    { icon: Linkedin, href: profile.socialLinks.linkedin, label: "LinkedIn" },
+    { icon: Mail, href: `mailto:${profile.socialLinks.email}`, label: "Email" },
   ]
 
   return (
@@ -48,7 +49,7 @@ export function Footer({ language }: FooterProps) {
           {/* Copyright */}
           <div className="text-center md:text-right">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} {t.name}. {t.copyright}
+              © {new Date().getFullYear()} {profile.name}. {t.copyright}
             </p>
           </div>
         </div>
